@@ -15,40 +15,36 @@
     </div>
     <input type="submit" value="Submit">
   </form>
-  <button id="getWeather">Get weather</button>
+
   <div id="output"></div>
 </body>
   <script>
-    document.getElementById('getWeather').addEventListener('click', fetchWeather);
     document.getElementById('fetch').addEventListener('submit', fetchWeather);
 
-// const async fetchLocationWeather = () => {
+async function fetchWeather(e) {
+   try{
+    e.preventDefault();
+    let newCity = document.getElementById('city').value;
+    // console.log(newCity);
+    let city = document.getElementById('city').value;
   
-// }
+      let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=6b55dc270d4a212bd0fb8253f1ce2d52`, {mode: 'cors'});
+      let data = await response.json();
 
-function fetchWeather(e) {
- e.preventDefault();
-  let newCity = document.getElementById('city').value;
-  console.log(newCity);
-  let city = newCity;
-  
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&APPID=6b55dc270d4a212bd0fb8253f1ce2d52`, {mode: 'cors'})
-        .then((res) => {
-          // console.log(res.json());
-          return res.json();
-        }).then((data) => {
-          console.log(data["main"]["temp"] + " C");
-          document.getElementById('output').innerHTML += 
-                    `<div> 
+      document.getElementById('output').innerHTML = `<div> 
                     <p>Temperature in ${data.name}: ${data["main"]["temp"] + " C"}
                     ${data.weather[0].description}</p>
                     </div>`;
-           // document.getElementById('output').innerHTML += 
-           //   JSON.stringify(data);
-          
+      // console.log(data["main"]["temp"] + " C");
 
-        })
+    }catch(error){
+       alert("Error please try again!")
     }
+  
+  
+}
+
+
 
   </script>
 </html>
